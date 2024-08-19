@@ -3,8 +3,8 @@
 import { cache } from "@/lib/cache";
 import db from "../db";
 
-export const getProducts = cache(() => {
-  return db.product.findMany({
+export const getProducts = cache(async () => {
+  return await db.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { name: "asc" },
   });
@@ -27,8 +27,8 @@ export const getProductData = async () => {
 };
 
 export const getMostPopularProducts = cache(
-  () => {
-    return db.product.findMany({
+  async () => {
+    return await db.product.findMany({
       where: { isAvailableForPurchase: true },
       orderBy: { orders: { _count: "desc" } },
       take: 6,
@@ -38,8 +38,8 @@ export const getMostPopularProducts = cache(
   { revalidate: 60 * 60 * 24 }
 );
 
-export const getNewestProducts = cache(() => {
-  return db.product.findMany({
+export const getNewestProducts = cache(async () => {
+  return await db.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { createdAt: "desc" },
     take: 6,
